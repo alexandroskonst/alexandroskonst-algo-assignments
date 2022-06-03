@@ -25,8 +25,8 @@ def enumerateAlignments(A, B, F, W, Z, WW, ZZ):
     if i==0 and j==0:
          WW.append(W)
          ZZ.append(Z)
-         print (WW)
-         print (ZZ)
+         #print (WW)
+         #print (ZZ)
          
          
     if i>0 and j>0:
@@ -42,5 +42,21 @@ def enumerateAlignments(A, B, F, W, Z, WW, ZZ):
 enumerateAlignments(A,B,F,W,Z, WW, ZZ)
 
 
+def ComputeAlignmentScore(A,B,g):
+ L = [None] * (len(B)+1)
+ for j in range(0, len(L)):
+     L[j] = (j*g)
+ K = [None] * (len(B)+1)
+ print (L)
+ print ('end')
+ for i in range(1, len(A)+1):
+     L,K = K,L 
+     L[0] = i*g
+     for j in range( 1 , len(B)+1):
+         md = compare(A[i-1], B[j-1])
+         print (L)
+         print( 'xxx')
+         L[j] = max(L[j-1] + g, K[j]+g, K[j-1] + md)
+ return L
 
-    
+ComputeAlignmentScore(A, B, -2)
