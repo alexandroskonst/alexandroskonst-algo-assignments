@@ -21,8 +21,8 @@ def create_dict(text):
 def f(data_dict, previous_value):
     if previous_value in data_dict:
         next_value = data_dict[previous_value]
-        print('next')
-        print(next_value[0])
+        #print('next')
+        #print(next_value[0])
         return next_value[0]
     else:
         return 'F'
@@ -34,24 +34,46 @@ def Purge(table, b):
     return table
 
 def searchTableY(table, y):
-    th = len(table) - 1
-    for x in reversed(table):
-        if x[0] == y:
-            return th
-        else:
-            th -= 1
-    return -1
-
-def searchTableJ(table, j):
     th = 0
     for x in table:
-        if x[1] == j:
+        if x[0] == y:
             return th
         else:
             th += 1
     return -1
 
+def searchTableJ(table, j):
+    #print('j ', j)
+    th = 0
+    for x in table:
+        #print(x)
+        #print(x[1])
+        if x[1] == j:
+            return x[0]
+        else:
+            th += 1
+    return -1
+
+def calculate_k_element(k, b, g, table):
+    lg = False
+    th = b * math.floor(k / b)
+    if th > b + g * (b - 1) - 1:
+        lg = True
+        th =  b + g * (b - 1) - 1
+    kb = searchTableJ(table, th)
+    if lg:
+        for y in range(0, k - th + 1):
+            kb = f(dict, kb)
+    else:
+
+        for y in range(0, k % b + 1):
+            kb = f(dict, kb)
+    print('kb' ,kb)
+    return kb
+
+
 def detect_cycle(dict, first_value, b, g, max_size):
+    table2 = []
     table = []
     y = first_value
     i = 0
@@ -62,8 +84,9 @@ def detect_cycle(dict, first_value, b, g, max_size):
             table = Purge(table, b)
             m = math.ceil(m)
         if i % b == 0:
+            table2.insert(0, (y,i))
             table.insert(0, (y,i))
-            print(table)
+            #print(table)
             m += 1
         y = f(dict, y)
         if y == 'F':
@@ -73,11 +96,11 @@ def detect_cycle(dict, first_value, b, g, max_size):
         if i % 1 < b:
             j = searchTableY(table, y)
             if j != -1:
-                print(y, i, j)
-                print(table)
-                return (y, i, j)
+                #print(y, i, j)
+                #print(table)
+                return (y, i, j), table, table2
 
-def recover_cycle(y, i, j, dict):
+def recover_cycle(y, i, j, dict, b):
     c = 1
     found_c = False
     yc = y
@@ -99,5 +122,10 @@ def recover_cycle(y, i, j, dict):
 
 dict, first_value = create_dict('test.txt')
 
-detect_cycle(dict, first_value, 3, 2, 3)
+el, table, table2 = detect_cycle(dict, first_value, 3, 2, 3)
+print(el, table)
+
+print('table2', table2)
+calculate_k_element(4, 3, 2, table2)
 #f(dict, 5)
+
