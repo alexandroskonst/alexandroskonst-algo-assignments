@@ -51,7 +51,7 @@ def searchTableJ(table, j):
             th += 1
     return -1
 
-def detect_cycle(dict, first_value, g, b, max_size):
+def detect_cycle(dict, first_value, b, g, max_size):
     table = []
     y = first_value
     i = 0
@@ -62,7 +62,7 @@ def detect_cycle(dict, first_value, g, b, max_size):
             table = Purge(table, b)
             m = math.ceil(m)
         if i % b == 0:
-            table.append((y,i))
+            table.insert(0, (y,i))
             print(table)
             m += 1
         y = f(dict, y)
@@ -81,9 +81,9 @@ def recover_cycle(y, i, j, dict):
     c = 1
     found_c = False
     yc = y
-    while c <= (g + 1) * b and found_c = False:
+    while c <= (g + 1) * b and found_c == False:
         yc = f(dict, yc)
-        if y == yc then:
+        if y == yc:
             found_c = True
         else:
             c += 1
