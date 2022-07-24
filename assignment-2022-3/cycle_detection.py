@@ -1,5 +1,6 @@
 from collections import defaultdict
 import math
+import sys
 
 def create_dict(text):
     d = defaultdict(list)
@@ -9,7 +10,6 @@ def create_dict(text):
     for y in x:
         k.append(y.strip())
     k = [int(i) for i in k]
-    print(k)
     for x in range(0, len(k)-1):
         if x == 0:
             first_value = k[x]
@@ -17,11 +17,8 @@ def create_dict(text):
     return d, first_value
 
 def f(data_dict, previous_value):
-    #print('previous' , previous_value)
     if previous_value in data_dict:
         next_value = data_dict[previous_value]
-        #print('next')
-        #print(next_value[0])
         return next_value[0]
     else:
         return 'F'
@@ -122,19 +119,27 @@ def recover_cycle(y, i, j, dict, b, g, table2):
     return l, c
 
 
+print_table = False
+arguments = sys.argv[1:]
+if len(arguments) == 5:
+    print_table = True
+    b = int(arguments[1])
+    g = int(arguments[2])
+    max_size = int(arguments[3])
+    txt = arguments[4]
+else:
+    b = int(arguments[0])
+    g = int(arguments[1])
+    max_size = int(arguments[2])
+    txt = arguments[3]
 
-
-b = 1000
-g = 2
-max_size = 1000
-dict, first_value = create_dict('test3.txt')
-print(dict)
-print(first_value)
+dict, first_value = create_dict(txt)
 
 y, i, j, table, table2 = detect_cycle(dict, first_value, b, g, max_size)
 
-print(y, i, j)
-
-print('table', table)
 leader, cycle = recover_cycle(y, i, j, dict, b, g, table2)
-print('cycle ', cycle, ' leader ', leader)
+print('cycle', cycle, 'leader', leader)
+
+if print_table:
+    for x in table:
+        print(x[0], x[1])
